@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://28t0d5653as6"]
+
+[sub_resource type="GDScript" id="GDScript_t5gjg"]
+script/source = "extends CharacterBody3D
+
+
+@export_group(\"My Properties\")
+@export SPEED: float = 5.0
+const JUMP_VELOCITY = 4.5
+
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	# if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+	#	velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var input_dir := Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var direction := (transform.basis * Vector3(1, 0, 0)).normalized()
+	if direction:
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	move_and_slide()
+"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g8rwc"]
+radius = 0.1
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lpq6y"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kw8sh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hlko6"]
+
+[node name="Sheep" type="CharacterBody3D"]
+script = SubResource("GDScript_t5gjg")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.31134e-07, -1, 0, 1, 1.31134e-07, 0, 0, 0, 1, 0.278344, 0.609436, -0.159721)
+mesh = SubResource("CapsuleMesh_g8rwc")
+skeleton = NodePath("../Nose")
+surface_material_override/0 = SubResource("StandardMaterial3D_lpq6y")
+
+[node name="EyeRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.31134e-07, -1, 0, 1, 1.31134e-07, 0, 0, 0, 1, 0.278344, 0.609436, 0.170492)
+mesh = SubResource("CapsuleMesh_g8rwc")
+skeleton = NodePath("../Nose")
+surface_material_override/0 = SubResource("StandardMaterial3D_lpq6y")
+
+[node name="Nose" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.384467, 0.44756, 0)
+mesh = SubResource("CapsuleMesh_g8rwc")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_kw8sh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hlko6")

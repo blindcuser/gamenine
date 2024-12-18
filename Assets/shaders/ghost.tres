@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://du5425ulmumjx"]
+
+[ext_resource type="Shader" path="res://Assets/shaders/ghost.gdshader" id="1_ts5wg"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ts5wg")
+shader_parameter/emmission_color = Color(1, 1, 1, 1)
+shader_parameter/emmission_ammount = 1.777
+shader_parameter/rim_sharpness = 0.928

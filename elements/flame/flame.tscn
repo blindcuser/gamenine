@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ilk6odnbcmox"]
+
+[ext_resource type="Material" uid="uid://cb2w58dbkyijc" path="res://elements/flame/flame_material.tres" id="1_svkgb"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_e6f5h"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_42p0e"]
+
+[node name="Flame" type="CharacterBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_e6f5h")
+surface_material_override/0 = ExtResource("1_svkgb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_42p0e")

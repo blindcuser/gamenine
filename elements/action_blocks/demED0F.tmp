@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://da83sjy6lnuuu"]
+
+[ext_resource type="Script" path="res://components/drag_component.gd" id="1_3vq10"]
+[ext_resource type="Material" uid="uid://chilc6i0bhk8c" path="res://Assets/materials/default_red_material.tres" id="1_4x0lk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_jybr0"]
+material = ExtResource("1_4x0lk")
+size = Vector3(2, 2, 2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8wf33"]
+radius = 0.9
+
+[node name="DemoBlock" type="CharacterBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_jybr0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8wf33")
+
+[node name="DragComponent" type="Node" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("1_3vq10")
+character = NodePath("..")

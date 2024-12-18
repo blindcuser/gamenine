@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://yrcltpc7wh8c"]
+
+[ext_resource type="PackedScene" uid="uid://da83sjy6lnuuu" path="res://elements/action_blocks/base/demo_block.tscn" id="1_5l1di"]
+[ext_resource type="PackedScene" uid="uid://bf2213t1ulh6x" path="res://elements/action_blocks/glb/05-start-block.glb" id="2_515go"]
+
+[node name="DemoBlock" instance=ExtResource("1_5l1di")]
+
+[node name="05-start-block2" parent="." index="4" instance=ExtResource("2_515go")]

@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://da83sjy6lnuuu"]
+
+[ext_resource type="Script" path="res://components/drag_component.gd" id="1_3vq10"]
+[ext_resource type="Script" path="res://components/rotation_component.gd" id="3_a3dy4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8wf33"]
+radius = 0.9
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p0bij"]
+size = Vector3(2, 2, 2)
+
+[node name="DemoBlock" type="CharacterBody3D"]
+axis_lock_linear_y = true
+
+[node name="DraggingCollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8wf33")
+disabled = true
+
+[node name="TouchingCollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_p0bij")
+
+[node name="DragComponent" type="Node" parent="." node_paths=PackedStringArray("character", "draggingCollisionShape", "touchingCollisionShape")]
+script = ExtResource("1_3vq10")
+character = NodePath("..")
+draggingCollisionShape = NodePath("../DraggingCollisionShape3D")
+touchingCollisionShape = NodePath("../TouchingCollisionShape3D")
+collision_mask = 3
+
+[node name="RotationComponent" type="Node" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("3_a3dy4")
+character = NodePath("..")
+
+[connection signal="touched" from="DragComponent" to="RotationComponent" method="rotate90degRight"]
