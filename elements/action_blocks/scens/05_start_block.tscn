@@ -1,8 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://yrcltpc7wh8c"]
+[gd_scene load_steps=7 format=3 uid="uid://yrcltpc7wh8c"]
 
 [ext_resource type="PackedScene" uid="uid://da83sjy6lnuuu" path="res://elements/action_blocks/base/demo_block.tscn" id="1_5l1di"]
+[ext_resource type="Script" path="res://elements/action_blocks/scens/05_start_block.gd" id="2_384gf"]
 [ext_resource type="PackedScene" uid="uid://bf2213t1ulh6x" path="res://elements/action_blocks/glb/05-start-block.glb" id="2_515go"]
+[ext_resource type="Script" path="res://components/spawner_component.gd" id="3_yqpmv"]
+[ext_resource type="PackedScene" uid="uid://ilk6odnbcmox" path="res://elements/flame/flame.tscn" id="4_u06dn"]
+[ext_resource type="Script" path="res://components/drag_component.gd" id="6_ktfm4"]
 
-[node name="DemoBlock" instance=ExtResource("1_5l1di")]
+[node name="StartBlock" instance=ExtResource("1_5l1di")]
+script = ExtResource("2_384gf")
 
-[node name="05-start-block2" parent="." index="4" instance=ExtResource("2_515go")]
+[node name="05-start-block2" parent="." index="2" instance=ExtResource("2_515go")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="SpawnerComponent" type="Node3D" parent="." index="3"]
+script = ExtResource("3_yqpmv")
+scene = ExtResource("4_u06dn")
+
+[node name="DragComponent" type="Node" parent="." index="4" node_paths=PackedStringArray("character", "draggingCollisionShape", "touchingCollisionShape")]
+script = ExtResource("6_ktfm4")
+character = NodePath("..")
+draggingCollisionShape = NodePath("../DraggingCollisionShape3D")
+touchingCollisionShape = NodePath("../TouchingCollisionShape3D")
+collision_mask = 2
+
+[connection signal="touched" from="DragComponent" to="." method="_on_drag_component_touched"]
