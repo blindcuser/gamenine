@@ -1,0 +1,101 @@
+[gd_scene load_steps=6 format=3 uid="uid://28t0d5653as6"]
+
+[sub_resource type="GDScript" id="GDScript_t5gjg"]
+script/source = "extends CharacterBody3D
+
+@onready var raycast : RayCast3D = $Body/RayCast3D
+
+@onready var bodyMesh : MeshInstance3D = $Body
+
+@export_category(\"Sheep Settings\")
+@export_group(\"Movement\")
+## Movement Speed of the Sheep
+@export var SPEED: float = 5.0 
+## Jump velocity of the Sheep
+@export var JUMP_VELOCITY: float = 4.5
+
+@export var rotation_speed = 2
+
+var _direction: Vector3 = Vector3.FORWARD
+var _last_collider;
+
+
+
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	# if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+	#	velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	
+	
+	if raycast.is_colliding() && (raycast.get_collider() != _last_collider) :
+		_direction = _direction.rotated(Vector3.UP, deg_to_rad(-90))
+		_last_collider = raycast.get_collider()
+	else :
+		_last_collider = null
+		
+	# var direction := (bodyMesh.transform.basis * _direction).normalized()
+	var direction = _direction
+	# bodyMesh.rotate_object_local(Vector3.UP, bodyMesh.rotation.angle_to(direction) )
+	
+	if direction:
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+		
+	bodyMesh.rotation.y = lerp_angle(bodyMesh.rotation.y, atan2(-_direction.x, -_direction.z), delta * rotation_speed)
+		
+
+	move_and_slide()
+	
+"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kw8sh"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g8rwc"]
+radius = 0.1
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lpq6y"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hlko6"]
+
+[node name="Sheep" type="CharacterBody3D"]
+script = SubResource("GDScript_t5gjg")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_kw8sh")
+
+[node name="Nose" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.384467, 0.44756, 0)
+mesh = SubResource("CapsuleMesh_g8rwc")
+skeleton = NodePath("../..")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1.31134e-07, -1, 0, 1, 1.31134e-07, 0, 0, 0, 1, 0.278344, 0.609436, 0.170492)
+mesh = SubResource("CapsuleMesh_g8rwc")
+skeleton = NodePath("../Nose")
+surface_material_override/0 = SubResource("StandardMaterial3D_lpq6y")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1.31134e-07, -1, 0, 1, 1.31134e-07, 0, 0, 0, 1, 0.278344, 0.609436, -0.159721)
+mesh = SubResource("CapsuleMesh_g8rwc")
+skeleton = NodePath("../Nose")
+surface_material_override/0 = SubResource("StandardMaterial3D_lpq6y")
+
+[node name="RayCast3D" type="RayCast3D" parent="Body"]
+target_position = Vector3(1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hlko6")

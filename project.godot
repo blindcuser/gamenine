@@ -1,0 +1,42 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="GameNine"
+run/main_scene="res://level_01.tscn"
+config/features=PackedStringArray("4.3", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+DrawLine3d="*res://DrawLine3D.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
+[display]
+
+window/size/always_on_top=true
+
+[global_group]
+
+moveable=""
+
+[physics]
+
+3d/default_gravity=20.0
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/default_filters/anisotropic_filtering_level=3
+anti_aliasing/quality/msaa_3d=1
