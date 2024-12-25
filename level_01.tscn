@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://5v0hx2nrkj0k"]
+[gd_scene load_steps=13 format=3 uid="uid://5v0hx2nrkj0k"]
 
 [ext_resource type="MeshLibrary" uid="uid://o7sg4ebl8m2x" path="res://Resources/simple-blocks.tres" id="1_20ef4"]
+[ext_resource type="PackedScene" uid="uid://ccxigf8g8yr2m" path="res://scenes/user_interface_test.tscn" id="1_r5j2c"]
 [ext_resource type="PackedScene" uid="uid://dhbd13twox2hr" path="res://elements/action_blocks/scens/01_end_block.tscn" id="2_h31xs"]
 [ext_resource type="PackedScene" uid="uid://yls77dl14843" path="res://elements/action_blocks/scens/03_left_block.tscn" id="3_1wakn"]
 [ext_resource type="PackedScene" uid="uid://lg8x0vyvjrv1" path="res://elements/action_blocks/scens/04_right_block.tscn" id="4_d5na1"]
@@ -29,9 +30,11 @@ friction = 0.0
 [node name="Level_01" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.750388, 0.346487, -0.562907, 0.0799981, 0.797738, 0.597675, 0.656139, -0.493519, 0.570894, -84.7762, 87.3141, 82.5126)
-fov = 10.2
+transform = Transform3D(0.722037, 0.367178, -0.586381, 0.0796322, 0.797811, 0.597625, 0.687257, -0.478202, 0.54681, -84.7762, 87.3141, 82.5126)
+fov = 18.9
 size = 9.176
+
+[node name="UserInterfaceTest" parent="Camera3D" instance=ExtResource("1_r5j2c")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.612372, -0.5, 0.612373, -0.707107, -3.09086e-08, 0.707107, -0.353553, -0.866025, -0.353553, 10, 6, -5)
