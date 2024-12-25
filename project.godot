@@ -33,6 +33,10 @@ window/size/always_on_top=true
 
 moveable=""
 
+[layer_names]
+
+3d_physics/layer_3="Flame"
+
 [physics]
 
 3d/default_gravity=20.0
