@@ -1,8 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://lg8x0vyvjrv1"]
+[gd_scene load_steps=5 format=3 uid="uid://lg8x0vyvjrv1"]
 
 [ext_resource type="PackedScene" uid="uid://da83sjy6lnuuu" path="res://elements/action_blocks/base/demo_block.tscn" id="1_ibahm"]
 [ext_resource type="PackedScene" uid="uid://dltpvgolqoel6" path="res://elements/action_blocks/glb/04-right-block.glb" id="2_oy7od"]
+[ext_resource type="Script" path="res://components/drag_component.gd" id="3_mdx0x"]
+[ext_resource type="Script" path="res://components/rotation_component.gd" id="4_qq71o"]
 
-[node name="DemoBlock" instance=ExtResource("1_ibahm")]
+[node name="RightBlock" instance=ExtResource("1_ibahm")]
 
-[node name="04-right-block2" parent="." index="4" instance=ExtResource("2_oy7od")]
+[node name="04-right-block2" parent="." index="2" instance=ExtResource("2_oy7od")]
+
+[node name="DragComponent" type="Node" parent="." index="3" node_paths=PackedStringArray("character", "draggingCollisionShape", "touchingCollisionShape")]
+script = ExtResource("3_mdx0x")
+character = NodePath("..")
+draggingCollisionShape = NodePath("../DraggingCollisionShape3D")
+touchingCollisionShape = NodePath("../TouchingCollisionShape3D")
+collision_mask = 2
+
+[node name="RotationComponent" type="Node" parent="." index="4" node_paths=PackedStringArray("character")]
+script = ExtResource("4_qq71o")
+character = NodePath("..")
+
+[connection signal="touched" from="DragComponent" to="RotationComponent" method="rotate90degRight"]
