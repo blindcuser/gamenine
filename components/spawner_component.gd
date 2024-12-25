@@ -18,7 +18,6 @@ func spawn(global_spawn_position: Vector3 = global_position, parent: Node = get_
 	# Update the global position of the instance.
 	# (This must be done after adding it as a child)
 	instance.global_position = global_spawn_position
-	print(self.global_rotation)
 	if(instance.has_method("set_direction") && instance.has_method("get_direction")):
 		var current_direction:Vector3 = instance.get_direction()
 		var new_rotation:float = self.global_rotation.y

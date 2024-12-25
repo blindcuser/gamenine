@@ -54,6 +54,9 @@ func _unhandled_input(event:InputEvent) -> void:
 
 func _start_dragging(position:Vector2) -> void:
 	var intersect:Dictionary = get_mouse_intersect(position, false, false)
+	if(intersect.is_empty()):
+		print("slide")
+		return
 	if(intersect.collider == character):
 		dragOffset = character.global_position \
 			- get_mouse_intersect(position, true, true).position
