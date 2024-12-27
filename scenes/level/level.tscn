@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://5v0hx2nrkj0k"]
+[gd_scene load_steps=20 format=3 uid="uid://5v0hx2nrkj0k"]
 
 [ext_resource type="PackedScene" uid="uid://ccxigf8g8yr2m" path="res://scenes/user_interface_test/user_interface_test.tscn" id="1_udr6t"]
 [ext_resource type="Script" path="res://components/global_rotate_camera_component.gd" id="2_u0do7"]
@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://lg8x0vyvjrv1" path="res://elements/action_blocks/scens/04_right_block.tscn" id="5_iaw8k"]
 [ext_resource type="PackedScene" uid="uid://yrcltpc7wh8c" path="res://elements/action_blocks/scens/05_start_block.tscn" id="6_aibwf"]
 [ext_resource type="PackedScene" uid="uid://ilk6odnbcmox" path="res://elements/flame/flame.tscn" id="7_xl4r7"]
+[ext_resource type="Shader" uid="uid://csytbu0vgxb8i" path="res://Assets/shaders/fire_shader.tres" id="9_5cn5c"]
+[ext_resource type="Texture2D" uid="uid://cviwome4dori0" path="res://elements/flame/textures/voronoi.png" id="10_xd2ry"]
+[ext_resource type="Texture2D" uid="uid://3if31d2em56g" path="res://elements/flame/textures/flame_1.png" id="11_ygs1b"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o82wi"]
 sky_top_color = Color(0.28733, 0.432923, 0.757372, 1)
@@ -25,16 +28,33 @@ ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.36
 ambient_light_energy = 0.55
 reflected_light_source = 2
+glow_enabled = true
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3yxcq"]
 friction = 0.0
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_btkc6"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c5raj"]
+render_priority = 0
+shader = ExtResource("9_5cn5c")
+shader_parameter/DissoleTiling = Vector2(0.25, 0.25)
+shader_parameter/DissolveSpeed = Vector2(0, 0.5)
+shader_parameter/DissolveAmmount = 0.5
+shader_parameter/Texture2DParameter = ExtResource("11_ygs1b")
+shader_parameter/Disolve = ExtResource("10_xd2ry")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qq3i4"]
+gravity = Vector3(0, 0, 0)
+color = Color(4, 1.25, 0.6, 0.8)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tye2m"]
+
 [node name="Level" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.612372, -0.5, 0.612373, -0.707107, -3.09086e-08, 0.707107, -0.353553, -0.866025, -0.353553, 10, 6, -5)
+visible = false
 shadow_enabled = true
 directional_shadow_mode = 0
 directional_shadow_max_distance = 301.7
@@ -88,6 +108,16 @@ size = 9.176
 
 [node name="GlobalRotateCameraComponent" type="Node" parent="CameraOrbiter"]
 script = ExtResource("2_u0do7")
+
+[node name="fire" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7253, 0, 2.29404)
+
+[node name="static_flame" type="GPUParticles3D" parent="fire"]
+material_override = SubResource("ShaderMaterial_c5raj")
+amount = 1
+lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_qq3i4")
+draw_pass_1 = SubResource("QuadMesh_tye2m")
 
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
